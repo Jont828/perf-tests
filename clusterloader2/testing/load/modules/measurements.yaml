@@ -242,7 +242,7 @@ steps:
     Method: TestMetrics
     Params:
       action: {{$action}}
-      systemPodMetricsEnabled: {{$ENABLE_SYSTEM_POD_METRICS}}
+      systemPodMetricsEnabled: false
       clusterOOMsIgnoredProcesses: {{YamlQuote $CLUSTER_OOMS_IGNORED_PROCESSES 4}}
       clusterOOMsTrackerEnabled: {{$ENABLE_CLUSTER_OOMS_TRACKER}}
       restartCountThresholdOverrides: {{YamlQuote $RESTART_COUNT_THRESHOLD_OVERRIDES 4}}
