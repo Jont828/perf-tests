@@ -79,7 +79,7 @@ steps:
     Params:
       action: start
       resourceConstraints: {{$DENSITY_RESOURCE_CONSTRAINTS_FILE}}
-      systemPodMetricsEnabled: {{$ENABLE_SYSTEM_POD_METRICS}}
+      systemPodMetricsEnabled: false
       restartCountThresholdOverrides: {{YamlQuote $RESTART_COUNT_THRESHOLD_OVERRIDES 4}}
       enableRestartCountCheck: {{$ENABLE_RESTART_COUNT_CHECK}}
 
@@ -248,6 +248,6 @@ steps:
     Method: TestMetrics
     Params:
       action: gather
-      systemPodMetricsEnabled: {{$ENABLE_SYSTEM_POD_METRICS}}
+      systemPodMetricsEnabled: false
       restartCountThresholdOverrides: {{YamlQuote $RESTART_COUNT_THRESHOLD_OVERRIDES 4}}
       enableRestartCountCheck: {{$ENABLE_RESTART_COUNT_CHECK}}
