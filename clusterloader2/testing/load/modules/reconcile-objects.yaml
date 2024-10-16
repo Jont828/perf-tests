@@ -27,11 +27,11 @@
 {{$smallDeploymentsPerNamespace := .smallDeploymentsPerNamespace}}
 
 # StatefulSets
-{{$statefulSetImage := DefaultParam .statefulSetImage "registry.k8s.io/pause:3.9"}}
-{{$smallStatefulSetSize := .smallStatefulSetSize}}
-{{$smallStatefulSetsPerNamespace := .smallStatefulSetsPerNamespace}}
-{{$mediumStatefulSetSize := .mediumStatefulSetSize}}
-{{$mediumStatefulSetsPerNamespace := .mediumStatefulSetsPerNamespace}}
+# {{$statefulSetImage := DefaultParam .statefulSetImage "registry.k8s.io/pause:3.9"}}
+# {{$smallStatefulSetSize := .smallStatefulSetSize}}
+# {{$smallStatefulSetsPerNamespace := .smallStatefulSetsPerNamespace}}
+# {{$mediumStatefulSetSize := .mediumStatefulSetSize}}
+# {{$mediumStatefulSetsPerNamespace := .mediumStatefulSetsPerNamespace}}
 
 # Jobs
 {{$jobImage := DefaultParam .jobImage "registry.k8s.io/pause:3.10"}}
@@ -44,8 +44,8 @@
 {{$completionsFactor := MultiplyFloat 2 $testMaxReplicaFactor}}
 
 # PV
-{{$pvSmallStatefulSetSize := DefaultParam .pvSmallStatefulSetSize 0}}
-{{$pvMediumStatefulSetSize := DefaultParam .pvMediumStatefulSetSize 0}}
+# {{$pvSmallStatefulSetSize := DefaultParam .pvSmallStatefulSetSize 0}}
+# {{$pvMediumStatefulSetSize := DefaultParam .pvMediumStatefulSetSize 0}}
 
 ## CL2 params
 {{$CHECK_IF_PODS_ARE_UPDATED := DefaultParam .CL2_CHECK_IF_PODS_ARE_UPDATED true}}
@@ -67,10 +67,10 @@ steps:
       Params:
         apiVersion: apps/v1
         kind: Deployment
-    - Identifier: WaitForRunningStatefulSets
-      Params:
-        apiVersion: apps/v1
-        kind: StatefulSet
+    # - Identifier: WaitForRunningStatefulSets
+    #   Params:
+    #     apiVersion: apps/v1
+    #     kind: StatefulSet
     - Identifier: WaitForRunningDaemonSets
       Params:
         apiVersion: apps/v1
@@ -160,34 +160,34 @@ steps:
         TargetLabelValue: {{$NET_POLICY_ENFORCEMENT_LATENCY_TARGET_LABEL_VALUE}}
         NetPolServerOnEveryNthPod: {{$NET_POLICY_SERVER_EVERY_NTH_POD}}
         Image: {{$deploymentImage}}
-  - namespaceRange:
-      min: 1
-      max: {{$namespaces}}
-    replicasPerNamespace: {{$smallStatefulSetsPerNamespace}}
-    tuningSet: {{$tuningSet}}
-    objectBundle:
-    - basename: small-statefulset
-      objectTemplatePath: statefulset_service.yaml
-    - basename: small-statefulset
-      objectTemplatePath: statefulset.yaml
-      templateFillMap:
-        ReplicasMin: {{MultiplyInt $smallStatefulSetSize $minReplicaFactor}}
-        ReplicasMax: {{MultiplyInt $smallStatefulSetSize $maxReplicaFactor}}
-        Image: {{$statefulSetImage}}
-  - namespaceRange:
-      min: 1
-      max: {{$namespaces}}
-    replicasPerNamespace: {{$mediumStatefulSetsPerNamespace}}
-    tuningSet: {{$tuningSet}}
-    objectBundle:
-    - basename: medium-statefulset
-      objectTemplatePath: statefulset_service.yaml
-    - basename: medium-statefulset
-      objectTemplatePath: statefulset.yaml
-      templateFillMap:
-        ReplicasMin: {{MultiplyInt $mediumStatefulSetSize $minReplicaFactor}}
-        ReplicasMax: {{MultiplyInt $mediumStatefulSetSize $maxReplicaFactor}}
-        Image: {{$statefulSetImage}}
+  # - namespaceRange:
+  #     min: 1
+  #     max: {{$namespaces}}
+  #   replicasPerNamespace: {{$smallStatefulSetsPerNamespace}}
+  #   tuningSet: {{$tuningSet}}
+  #   objectBundle:
+  #   - basename: small-statefulset
+  #     objectTemplatePath: statefulset_service.yaml
+  #   - basename: small-statefulset
+  #     objectTemplatePath: statefulset.yaml
+  #     templateFillMap:
+  #       ReplicasMin: {{MultiplyInt $smallStatefulSetSize $minReplicaFactor}}
+  #       ReplicasMax: {{MultiplyInt $smallStatefulSetSize $maxReplicaFactor}}
+  #       Image: {{$statefulSetImage}}
+  # - namespaceRange:
+  #     min: 1
+  #     max: {{$namespaces}}
+  #   replicasPerNamespace: {{$mediumStatefulSetsPerNamespace}}
+  #   tuningSet: {{$tuningSet}}
+  #   objectBundle:
+  #   - basename: medium-statefulset
+  #     objectTemplatePath: statefulset_service.yaml
+  #   - basename: medium-statefulset
+  #     objectTemplatePath: statefulset.yaml
+  #     templateFillMap:
+  #       ReplicasMin: {{MultiplyInt $mediumStatefulSetSize $minReplicaFactor}}
+  #       ReplicasMax: {{MultiplyInt $mediumStatefulSetSize $maxReplicaFactor}}
+  #       Image: {{$statefulSetImage}}
   - namespaceRange:
       min: 1
       max: {{$namespaces}}
@@ -227,52 +227,52 @@ steps:
         ReplicasMin: {{MultiplyInt $bigJobSize $minReplicaFactor}}
         ReplicasMax: {{MultiplyInt $bigJobSize $maxReplicaFactor}}
         Image: {{$jobImage}}
-{{if and $is_deleting $ENABLE_PVS}}
-  - namespaceRange:
-      min: 1
-      max: {{$namespaces}}
-    replicasPerNamespace: 0
-    tuningSet: {{$tuningSet}}
-    objectBundle:
-  {{range $ssIndex := Loop $pvSmallStatefulSetSize}}
-      - basename: pv-small-statefulset-{{$ssIndex}}
-        objectTemplatePath: pvc.yaml
-        listUnknownObjectOptions:
-          labelSelector:
-            matchLabels:
-              name: small-statefulset-{{$ssIndex}}
-  {{end}}
-  - namespaceRange:
-      min: 1
-      max: {{$namespaces}}
-    replicasPerNamespace: 0
-    tuningSet: {{$tuningSet}}
-    objectBundle:
-  {{range $ssIndex := Loop $pvMediumStatefulSetSize}}
-      - basename: pv-medium-statefulset-{{$ssIndex}}
-        objectTemplatePath: pvc.yaml
-        listUnknownObjectOptions:
-          labelSelector:
-            matchLabels:
-              name: medium-statefulset-{{$ssIndex}}
-  {{end}}
-{{end}}
+# {{if and $is_deleting $ENABLE_PVS}}
+#   - namespaceRange:
+#       min: 1
+#       max: {{$namespaces}}
+#     replicasPerNamespace: 0
+#     tuningSet: {{$tuningSet}}
+#     objectBundle:
+#   {{range $ssIndex := Loop $pvSmallStatefulSetSize}}
+#       - basename: pv-small-statefulset-{{$ssIndex}}
+#         objectTemplatePath: pvc.yaml
+#         listUnknownObjectOptions:
+#           labelSelector:
+#             matchLabels:
+#               name: small-statefulset-{{$ssIndex}}
+#   {{end}}
+#   - namespaceRange:
+#       min: 1
+#       max: {{$namespaces}}
+#     replicasPerNamespace: 0
+#     tuningSet: {{$tuningSet}}
+#     objectBundle:
+#   {{range $ssIndex := Loop $pvMediumStatefulSetSize}}
+#       - basename: pv-medium-statefulset-{{$ssIndex}}
+#         objectTemplatePath: pvc.yaml
+#         listUnknownObjectOptions:
+#           labelSelector:
+#             matchLabels:
+#               name: medium-statefulset-{{$ssIndex}}
+#   {{end}}
+# {{end}}
 
 - name: Waiting for '{{$actionName}}' to be completed
   measurements:
   - Method: WaitForControlledPodsRunning
     Instances:
     - Identifier: WaitForRunningDeployments
-    - Identifier: WaitForRunningStatefulSets
+    # - Identifier: WaitForRunningStatefulSets
     - Identifier: WaitForRunningDaemonSets
     - Identifier: WaitForRunningJobs
     Params:
       action: gather
-{{if and $is_deleting $ENABLE_PVS}}
-  - Identifier: WaitForPVCsToBeDeleted
-    Method: WaitForBoundPVCs
-    Params:
-      desiredPVCCount: 0
-      labelSelector: group = load
-      timeout: {{$operationTimeout}}
-{{end}}
+# {{if and $is_deleting $ENABLE_PVS}}
+#   - Identifier: WaitForPVCsToBeDeleted
+#     Method: WaitForBoundPVCs
+#     Params:
+#       desiredPVCCount: 0
+#       labelSelector: group = load
+#       timeout: {{$operationTimeout}}
+# {{end}}
