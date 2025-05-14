@@ -1,0 +1,11 @@
+./run-e2e.sh cluster-loader2 \
+--nodes=100 \
+--provider=aks \
+--testconfig="/home/jonathan/telescope/modules/python/clusterloader2/slo/config/load-config.yaml" \
+--testoverrides="/home/jonathan/telescope/overrides.yaml" \
+--enable-prometheus-server="true" \
+--prometheus-storage-class-provisioner="kubernetes.io/azure-disk" \
+--prometheus-pvc-storage-class="default" \
+--prometheus-storage-class-volume-type="Standard_LRS" \
+--prometheus-apiserver-scrape-port="6443" \
+--report-dir="_artifacts/telescope-100/3x16ctrl-100x4worker-200xpods-1xchurn"
